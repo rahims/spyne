@@ -296,7 +296,13 @@ def fault_to_parent_element(prot, cls, value, tns, parent_elt, name=None):
     etree.SubElement(element, 'faultstring').text = value.faultstring
     etree.SubElement(element, 'faultactor').text = value.faultactor
     if value.detail != None:
-        etree.SubElement(element, 'detail').append(value.detail)
+        if len(value.detail) > 1:
+            detailElement = etree.SubElement(element, 'detail')
+
+            for detail in value.detail:
+                detailElement.append(detail)
+        else:
+            etree.SubElement(element, 'detail').append(value.detail)
 
 
 def fault_from_element(prot, cls, element):
